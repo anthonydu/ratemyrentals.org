@@ -13,4 +13,4 @@ Allow: /
 User-agent: bingbot
 Allow: /
 
-Sitemap: /sitemap.xml
+Sitemap: https://www.ratemyrentals.org/sitemap.xml
