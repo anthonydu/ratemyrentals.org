@@ -16,7 +16,7 @@
 			<button
 				type="button"
 				class="cursor-pointer bg-slate-100 p-5 text-left"
-				on:click={() => goto(`/${place.id}`)}
+				on:click={() => goto(encodeURI(`/${place.id}`))}
 			>
 				<h2 class="text-2xl font-black">{place.name}</h2>
 				<h3>{place.full_address}</h3>

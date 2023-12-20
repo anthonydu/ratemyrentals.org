@@ -2,6 +2,7 @@
 	import Search from '$lib/components/Search.svelte';
 	import backgroundImage from '$lib/img/background-image.jpg';
 	import SignLog from '$lib/components/SignLog.svelte';
+	import { user } from '$lib/store';
 </script>
 
 <svelte:head>
@@ -11,8 +12,13 @@
 </svelte:head>
 
 <header class="fixed top-0 z-50 h-16 w-full text-white">
-	<nav class="mx-auto flex h-full max-w-6xl items-center justify-end px-8">
-		<SignLog />
+	<nav class="mx-auto flex h-full max-w-6xl flex-row-reverse items-center justify-between px-8">
+		<div class="flex gap-3">
+			<SignLog />
+		</div>
+		{#if $user}
+			<p>{$user.email}</p>
+		{/if}
 	</nav>
 </header>
 

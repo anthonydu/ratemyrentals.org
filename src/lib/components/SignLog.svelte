@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { supabase } from '$lib/supabase';
-	import type { User } from '@supabase/supabase-js';
+	import { user } from '$lib/store';
 	import { dev } from '$app/environment';
 
 	enum State {
@@ -22,11 +22,6 @@
 
 	let email: string;
 
-	let alert = {
-		shown: false,
-		message: ''
-	};
-
 	const handleSubmit = () => {
 		supabase.auth
 			.signInWithOtp({
@@ -39,23 +34,31 @@
 	const handleSignOut = () => {
 		supabase.auth.signOut();
 		state = State.Closed;
-		user = undefined;
+		$user = null;
 	};
-
-	let user: User | undefined;
-	supabase.auth.getSession().then(({ data }) => (user = data.session?.user));
 </script>
 
-<button
-	class="whitespace-nowrap text-left"
-	type="button"
-	on:click={() => {
-		if (user) state = State.SignOut;
-		else state = State.Login;
-	}}
->
-	{user ? user.email : 'Log In'}
-</button>
+{#if !$user}
+	<button
+		class="whitespace-nowrap text-left"
+		type="button"
+		on:click={() => {
+			state = State.Login;
+		}}
+	>
+		Log in
+	</button>
+{:else}
+	<a class="whitespace-nowrap text-left" href="/dashboard">Dashboard</a>
+	<button
+		class="whitespace-nowrap text-left"
+		type="button"
+		on:click={() => (state = State.SignOut)}
+	>
+		Sign out
+	</button>
+{/if}
+
 <dialog class="w-full max-w-sm rounded-lg bg-white p-10" bind:this={dialog}>
 	<button
 		type="button"
@@ -66,9 +69,6 @@
 	</button>
 	<form class="flex w-full flex-col gap-3" on:submit|preventDefault={handleSubmit}>
 		<p class="text-xl">{state}</p>
-		{#if alert.shown}
-			<p>{alert.message}</p>
-		{/if}
 		{#if state === State.Login}
 			<label for="email">Email Address</label>
 			<input

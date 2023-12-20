@@ -18,11 +18,11 @@
 	export let autofocus = false;
 
 	const handleSubmit = () => {
-		goto(`/search?q=${$searchQuery}&filter=${$searchFilter}`);
+		goto(encodeURI(`/search?q=${$searchQuery}&filter=${$searchFilter}`));
 	};
 	const handleClick = (autocompleteQuery: string) => {
 		searchQuery.set(autocompleteQuery);
-		goto(`/search?q=${autocompleteQuery}&filter=${$searchFilter}`);
+		goto(encodeURI(`/search?q=${autocompleteQuery}&filter=${$searchFilter}`));
 		suggestions = [];
 	};
 
@@ -38,7 +38,7 @@
 
 	const handleChange = () => {
 		if ($page.url.pathname.startsWith('/search')) {
-			goto(`/search?q=${$searchQuery}&filter=${$searchFilter}`);
+			goto(encodeURI(`/search?q=${$searchQuery}&filter=${$searchFilter}`));
 		}
 	};
 </script>
