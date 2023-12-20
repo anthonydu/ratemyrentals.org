@@ -28,9 +28,11 @@
 			classes={{
 				form: 'max-w-sm flex-wrap shadow-lg sm:max-w-max',
 				select:
-					'h-14 w-full rounded-t-md bg-gray-200 px-5 text-black sm:w-44 sm:rounded-l-md sm:rounded-tr-none sm:bg-blue-600 sm:text-white',
-				input: 'h-14 w-full rounded-bl-md bg-white px-5 text-black sm:w-80 sm:rounded-none',
-				button: 'h-14 w-14 bg-blue-600 text-white'
+					'h-14 w-full rounded-[0.375rem_0.375rem_0_0] bg-gray-200 px-5 text-black sm:w-44 sm:rounded-[0.375rem_0_0_0.375rem] sm:bg-blue-600 sm:text-white',
+				input:
+					'h-14 w-full rounded-[0_0_0_0.375rem] bg-white px-5 text-black sm:w-80 sm:rounded-none',
+				button:
+					'h-14 w-14 rounded-[0_0_0.375rem_0] bg-blue-600 text-white sm:rounded-[0_0.375rem_0.375rem_0]'
 			}}
 			autofocus
 		/>

@@ -3,7 +3,6 @@
 	import { searchFilter, searchQuery } from '$lib/store';
 	import type { Place } from '$lib/types';
 	import SearchIcon from '$lib/img/SearchIcon.svelte';
-	import ChevronDown from '$lib/img/ChevronDown.svelte';
 	import { supabase } from '$lib/supabase';
 	import { page } from '$app/stores';
 
@@ -107,9 +106,7 @@
 				<option value="US">United States</option>
 			</optgroup>
 		</select>
-		<ChevronDown
-			className="w-3 h-3 absolute top-1/2 right-5 -translate-y-1/2 pointer-events-none"
-		/>
+		<p class="pointer-events-none absolute right-5 top-1/2 -translate-y-1/2">&blacktriangledown;</p>
 	</div>
 	<div class="relative flex w-full sm:w-auto">
 		<!-- svelte-ignore a11y-autofocus -->
@@ -121,17 +118,18 @@
 			placeholder="Enter an address"
 			bind:value={$searchQuery}
 			on:input={handleInput}
+			on:focus={handleInput}
 			{autofocus}
 		/>
 		{#if type === 'primary'}
-			<button type="submit" class={`${classes.button} rounded-br-md sm:rounded-r-md`}>
+			<button type="submit" class={`${classes.button}`}>
 				<div class="flex items-center justify-center">
 					<SearchIcon className="h-2/5 w-2/5" />
 				</div>
 			</button>
 		{/if}
 		<div
-			class="invisible absolute top-full flex translate-y-1 flex-col overflow-hidden rounded bg-white shadow-lg peer-focus:visible [&:has(>_button:hover)]:visible"
+			class="invisible absolute top-full flex translate-y-1 flex-col overflow-hidden rounded-md bg-white shadow-lg peer-focus:visible [&:has(>_button:hover)]:visible"
 		>
 			{#each suggestions as suggestion}
 				<button
