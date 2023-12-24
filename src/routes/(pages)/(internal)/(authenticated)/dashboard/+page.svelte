@@ -1,7 +1,13 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import House from '$lib/img/House.svelte';
+	import type { Place, Review } from '$lib/types.js';
 
 	export let data;
+
+	const handleClick = (review: Review & { place: Place }) => {
+		goto(encodeURI(`/property/${review.place.id}#${review.id}`));
+	};
 </script>
 
 <h1 class="text-3xl">Dashboard</h1>
@@ -10,7 +16,11 @@
 
 <div class="flex flex-col gap-5">
 	{#each data.reviews as review}
-		<button type="button" class="space-y-3 bg-slate-100 p-5 text-left">
+		<button
+			type="button"
+			class="space-y-3 bg-slate-100 p-5 text-left"
+			on:click={() => handleClick(review)}
+		>
 			<p class="font-bold">{review.place.name}</p>
 			<div class="flex flex-row items-center gap-1">
 				{#each { length: 5 } as _, i}
