@@ -10,3 +10,10 @@ export type Place = {
 	landlords: string[];
 	full_address?: string;
 };
+
+export type DialogState =
+	| 'Closed'
+	| 'Log In or Sign Up'
+	| 'Loading'
+	| 'Check Your Inbox'
+	| 'Signing Out';

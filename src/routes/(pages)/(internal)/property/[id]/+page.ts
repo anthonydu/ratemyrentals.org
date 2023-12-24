@@ -9,9 +9,7 @@ export async function load({ params }) {
 		.select()
 		.eq('id', params.id);
 
-	if (!data) {
-		throw error(404);
-	}
+	if (!data) throw error(404, 'Property not found');
 
 	data.forEach(set_full_address);
 

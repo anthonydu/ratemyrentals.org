@@ -1,4 +1,6 @@
 <script lang="ts">
+	import AddProperty from '$lib/components/AddProperty.svelte';
+
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 </script>
@@ -16,7 +18,7 @@
 			<button
 				type="button"
 				class="cursor-pointer bg-slate-100 p-5 text-left"
-				on:click={() => goto(encodeURI(`/${place.id}`))}
+				on:click={() => goto(encodeURI(`/property/${place.id}`))}
 			>
 				<h2 class="text-2xl font-black">{place.name}</h2>
 				<h3>{place.full_address}</h3>
@@ -27,9 +29,8 @@
 		{/each}
 		<div class="flex w-full flex-col items-center gap-3 bg-slate-100 px-5 py-10">
 			<p class="text-center text-lg">Can't find your rental?</p>
-			<button type="button" class="rounded-full bg-blue-700 px-8 py-3 text-white">
-				Add a property
-			</button>
+			<AddProperty classes={{ button: 'rounded-full bg-blue-700 px-8 py-3 text-white' }}
+			></AddProperty>
 		</div>
 	</div>
 	<div class="hidden flex-1 md:block"></div>

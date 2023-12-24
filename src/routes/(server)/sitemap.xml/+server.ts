@@ -4,7 +4,7 @@ import { error } from '@sveltejs/kit';
 export async function GET() {
 	const { data } = await supabase.from('places').select('id');
 
-	if (!data) throw error(502);
+	if (!data) throw error(502, 'Failed to fetch data from Supabase');
 
 	let urls = '';
 

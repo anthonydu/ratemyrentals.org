@@ -5,6 +5,7 @@
 	import SearchIcon from '$lib/img/SearchIcon.svelte';
 	import { supabase } from '$lib/supabase';
 	import { page } from '$app/stores';
+	import { set_full_address } from '$lib/utils';
 
 	let suggestions: Place[] = [];
 
@@ -33,7 +34,7 @@
 			.ilike('country_code', $searchFilter)
 			.textSearch('searchable', $searchQuery ? $searchQuery.split(' ').join(':* & ') + ':*' : '')
 			.limit(5)
-			.then(({ data }) => (suggestions = data || []));
+			.then(({ data }) => (suggestions = data?.map<Place>(set_full_address) || []));
 	};
 
 	const handleChange = () => {
@@ -139,10 +140,7 @@
 				>
 					<p>{suggestion.name}</p>
 					<p class="text-xs text-slate-400">
-						{suggestion.street_address},
-						{suggestion.locality},
-						{suggestion.administrative_area},
-						{suggestion.country_code}
+						{suggestion.full_address}
 					</p>
 				</button>
 			{/each}
