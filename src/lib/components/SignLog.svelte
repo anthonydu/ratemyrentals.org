@@ -3,7 +3,6 @@
 	import type { DialogState } from '$lib/types';
 	import LoadingSpinner from '$lib/img/LoadingSpinner.svelte';
 	import { page } from '$app/stores';
-	import { goto, invalidateAll } from '$app/navigation';
 
 	export let showButtons = true;
 
@@ -37,8 +36,7 @@
 	};
 
 	const handleSignOut = () => {
-		$page.data.supabase.auth.signOut();
-		window.location.reload();
+		$page.data.supabase.auth.signOut().then(() => window.location.reload());
 	};
 </script>
 

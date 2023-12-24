@@ -8,6 +8,9 @@
 
 <Header />
 
-<main class="mx-auto mt-16 max-w-6xl p-8">
-	<slot />
+<main class="mx-auto mt-16 flex max-w-6xl flex-row p-8">
+	<div class="flex flex-[2] flex-col gap-5">
+		<slot />
+	</div>
+	<div class="hidden flex-1 md:block"></div>
 </main>

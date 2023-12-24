@@ -11,6 +11,15 @@ export type Place = {
 	full_address?: string;
 };
 
+export type Review = {
+	id: string;
+	created_at: string;
+	body: string;
+	place_id: string;
+	user_id: string;
+	rating: number;
+};
+
 export type DialogState =
 	| 'Closed'
 	| 'Log In or Sign Up'

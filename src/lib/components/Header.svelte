@@ -12,6 +12,8 @@
 	}
 
 	let state = State.Closed;
+
+	$: $page.url, (state = State.Closed);
 </script>
 
 <header class="fixed top-0 z-50 h-16 w-full bg-blue-700 text-white">
