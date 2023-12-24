@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { user } from '$lib/store';
 	import SignLog from './SignLog.svelte';
 	import type { DialogState } from '../types';
+	import { page } from '$app/stores';
 
 	export let classes: {
 		button: string;
@@ -11,7 +11,7 @@
 	let state: DialogState = 'Closed';
 
 	const handleClick = () => {
-		if ($user) {
+		if ($page.data.session) {
 			goto(encodeURI('/add-property'));
 		} else {
 			state = 'Log In or Sign Up';

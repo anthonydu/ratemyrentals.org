@@ -2,19 +2,20 @@
 	import AddProperty from '$lib/components/AddProperty.svelte';
 
 	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
+
+	export let data;
 </script>
 
 <svelte:head>
-	<title>{$page.data.query} | Rate My Rentals</title>
+	<title>{data.query} | Rate My Rentals</title>
 </svelte:head>
 
 <div class="flex">
 	<div class="flex flex-[2] flex-col gap-5">
 		<h1>
-			Results for "{$page.data.query}"
+			Results for "{data.query}"
 		</h1>
-		{#each $page.data.places as place}
+		{#each data.places as place}
 			<button
 				type="button"
 				class="cursor-pointer bg-slate-100 p-5 text-left"

@@ -1,15 +1,17 @@
-import { supabase } from '$lib/supabase.js';
 import { error } from '@sveltejs/kit';
 
-export async function GET() {
-	const { data } = await supabase.from('places').select('id');
+export async function GET({ locals }) {
+	const { data } = await locals.supabase.from('places').select('id');
 
 	if (!data) throw error(502, 'Failed to fetch data from Supabase');
 
 	let urls = '';
 
-	data.forEach(({ id }) => {
-		urls += /* xml */ `<url><loc>https://www.ratemyrentals.org/${id}</loc></url>`;
+	data.forEach(({ id }: { id: string }) => {
+		urls += /* xml */ `
+		<url>
+			<loc>https://www.ratemyrentals.org/${id}</loc>
+		</url>`;
 	});
 
 	return new Response(

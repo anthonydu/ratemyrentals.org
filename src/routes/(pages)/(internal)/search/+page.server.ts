@@ -1,8 +1,7 @@
 import { set_full_address } from '$lib/utils.js';
 import { redirect } from '@sveltejs/kit';
-import { supabase } from '$lib/supabase.js';
 
-export async function load({ url }) {
+export async function load({ url, locals: { supabase } }) {
 	const searchParams = url.searchParams;
 
 	const query = searchParams.get('q');

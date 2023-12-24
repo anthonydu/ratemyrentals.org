@@ -3,7 +3,6 @@
 	import { searchFilter, searchQuery } from '$lib/store';
 	import type { Place } from '$lib/types';
 	import SearchIcon from '$lib/img/SearchIcon.svelte';
-	import { supabase } from '$lib/supabase';
 	import { page } from '$app/stores';
 	import { set_full_address } from '$lib/utils';
 
@@ -28,7 +27,7 @@
 	};
 
 	const handleInput = () => {
-		supabase
+		$page.data.supabase
 			.from('places')
 			.select()
 			.ilike('country_code', $searchFilter)

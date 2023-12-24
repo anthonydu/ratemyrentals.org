@@ -1,9 +1,8 @@
 import type { Place } from '$lib/types';
 import { error } from '@sveltejs/kit';
 import { set_full_address } from '$lib/utils.js';
-import { supabase } from '$lib/supabase.js';
 
-export async function load({ params }) {
+export async function load({ params, locals: { supabase } }) {
 	const { data }: { data: Place[] | null } = await supabase
 		.from('places')
 		.select()

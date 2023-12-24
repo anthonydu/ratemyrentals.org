@@ -2,7 +2,7 @@
 	import Search from '$lib/components/Search.svelte';
 	import backgroundImage from '$lib/img/background-image.jpg';
 	import SignLog from '$lib/components/SignLog.svelte';
-	import { user } from '$lib/store';
+	import { page } from '$app/stores';
 </script>
 
 <svelte:head>
@@ -16,8 +16,8 @@
 		<div class="flex gap-3">
 			<SignLog />
 		</div>
-		{#if $user}
-			<p>{$user.email}</p>
+		{#if $page.data.session}
+			<p>{$page.data.session.user.email}</p>
 		{/if}
 	</nav>
 </header>

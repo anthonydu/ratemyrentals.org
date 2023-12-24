@@ -3,7 +3,7 @@
 	import Search from '$lib/components/Search.svelte';
 	import Hamburger from '$lib/img/Hamburger.svelte';
 	import SearchIcon from '$lib/img/SearchIcon.svelte';
-	import { user } from '$lib/store';
+	import { page } from '$app/stores';
 
 	enum State {
 		Closed = 0,
@@ -53,11 +53,11 @@
 			<div
 				class={`${
 					(state === State.Burger ? 'translate-y-full' : 'translate-y-0') +
-					(!$user ? ' md:hidden' : '')
+					(!$page.data.session ? ' md:hidden' : '')
 				} absolute bottom-0 right-8 -z-10 flex flex-col gap-5 rounded-b bg-blue-600 p-5 transition-all duration-500`}
 			>
-				{#if $user}
-					<p class="md:hidden">{$user.email}</p>
+				{#if $page.data.session}
+					<p class="md:hidden">{$page.data.session.user.email}</p>
 					<hr class="md:hidden" />
 				{/if}
 				<SignLog />
@@ -79,7 +79,7 @@
 				/>
 			</div>
 		</div>
-		{#if !$user}
+		{#if !$page.data.session}
 			<div class="hidden flex-row gap-5 md:flex">
 				<SignLog />
 			</div>
@@ -92,7 +92,7 @@
 					else state = State.Burger;
 				}}
 			>
-				<p>{$user.email}</p>
+				<p>{$page.data.session.user.email}</p>
 			</button>
 		{/if}
 	</nav>

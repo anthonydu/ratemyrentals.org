@@ -1,43 +1,49 @@
 <script lang="ts">
-	import { supabase } from '$lib/supabase';
-	import { user } from '$lib/store';
 	import { dev } from '$app/environment';
 	import type { DialogState } from '$lib/types';
 	import LoadingSpinner from '$lib/img/LoadingSpinner.svelte';
+	import { page } from '$app/stores';
+	import { goto, invalidateAll } from '$app/navigation';
 
 	export let showButtons = true;
 
 	export let state: DialogState = 'Closed';
 
 	let dialog: HTMLDialogElement;
+	let input: HTMLInputElement;
 
 	$: if (dialog) {
 		if (state !== 'Closed') {
 			dialog.showModal();
+			if (state === 'Log In or Sign Up') setTimeout(() => input.focus(), 100);
 		} else dialog.close();
 	}
 
 	let email: string;
 
-	const handleSubmit = () => {
-		supabase.auth
-			.signInWithOtp({
-				email: email,
-				options: { emailRedirectTo: dev ? 'http://localhost:5173' : undefined }
-			})
-			.then(() => (state = 'Check Your Inbox'));
+	const handleSubmit = async () => {
 		state = 'Loading';
+		const { error } = await $page.data.supabase.auth.signInWithOtp({
+			email: email,
+			options: { emailRedirectTo: dev ? 'http://localhost:5173' : undefined }
+		});
+		if (error) {
+			console.error(error);
+			alert(error.message);
+			state = 'Log In or Sign Up';
+		} else {
+			state = 'Check Your Inbox';
+		}
 	};
 
 	const handleSignOut = () => {
-		supabase.auth.signOut();
-		state = 'Closed';
-		$user = null;
+		$page.data.supabase.auth.signOut();
+		window.location.reload();
 	};
 </script>
 
 {#if showButtons}
-	{#if !$user}
+	{#if !$page.data.session}
 		<button
 			class="whitespace-nowrap text-left"
 			type="button"
@@ -79,6 +85,8 @@
 					id="email"
 					autocomplete="email"
 					bind:value={email}
+					bind:this={input}
+					required
 				/>
 				<button class="rounded-lg bg-blue-600 py-3 text-white" type="submit">
 					Log In or Sign Up with Email
