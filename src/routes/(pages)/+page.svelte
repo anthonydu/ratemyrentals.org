@@ -11,7 +11,7 @@
 <svelte:head>
 	<title>Rate My Rentals</title>
 	<meta name="description" content="Rate your rentals, landlords or tenants." />
-	<meta name="theme-color" content="#000000" />
+	<meta name="theme-color" content="#6b6b6b" />
 </svelte:head>
 
 <header class="fixed top-0 z-50 h-16 w-full text-white">
@@ -54,9 +54,9 @@
 		<h2 class="text-center text-xl drop-shadow-md">Enter an address to get started!</h2>
 		<Search
 			classes={{
-				form: 'max-w-sm flex-wrap shadow-lg sm:max-w-max',
+				form: 'max-w-sm flex-wrap text-black shadow-lg sm:max-w-max sm:text-white',
 				select:
-					'h-14 w-full rounded-[0.375rem_0.375rem_0_0] bg-gray-200 px-5 text-black sm:w-44 sm:rounded-[0.375rem_0_0_0.375rem] sm:bg-blue-600 sm:text-white',
+					'h-14 w-full rounded-[0.375rem_0.375rem_0_0] bg-gray-200 px-5 sm:w-44 sm:rounded-[0.375rem_0_0_0.375rem] sm:bg-blue-600',
 				input:
 					'h-14 w-full rounded-[0_0_0_0.375rem] bg-white px-5 text-black sm:w-80 sm:rounded-none',
 				button:
