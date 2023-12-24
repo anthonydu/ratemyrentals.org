@@ -3,22 +3,44 @@
 	import backgroundImage from '$lib/img/background-image.jpg';
 	import SignLog from '$lib/components/SignLog.svelte';
 	import { page } from '$app/stores';
+	import Hamburger from '$lib/img/Hamburger.svelte';
+
+	let menuOpen = false;
 </script>
 
 <svelte:head>
 	<title>Rate My Rentals</title>
-	<meta name="description" content="Review your rentals, landlords or tenants." />
+	<meta name="description" content="Rate your rentals, landlords or tenants." />
 	<meta name="theme-color" content="#000000" />
 </svelte:head>
 
 <header class="fixed top-0 z-50 h-16 w-full text-white">
 	<nav class="mx-auto flex h-full max-w-6xl flex-row-reverse items-center justify-between px-8">
-		<div class="flex gap-3">
+		<div class="hidden gap-3 sm:flex">
 			<SignLog />
 		</div>
 		{#if $page.data.session}
-			<p>{$page.data.session.user.email}</p>
+			<p class="hidden sm:block">{$page.data.session.user.email}</p>
 		{/if}
+		<button
+			class="flex h-10 w-10 items-center justify-center sm:hidden"
+			type="button"
+			on:click={() => (menuOpen = !menuOpen)}
+		>
+			<Hamburger className="h-5 w-5" />
+		</button>
+		<div
+			class={`${
+				(menuOpen ? 'translate-y-full opacity-100' : 'translate-y-3/4 opacity-0') +
+				(!$page.data.session ? ' md:hidden' : '')
+			} absolute bottom-0 right-8 -z-10 flex flex-col gap-5 rounded-lg bg-blue-600 p-5 transition-all duration-500`}
+		>
+			{#if $page.data.session}
+				<p class="md:hidden">{$page.data.session.user.email}</p>
+				<hr class="md:hidden" />
+			{/if}
+			<SignLog />
+		</div>
 	</nav>
 </header>
 

@@ -23,7 +23,7 @@
 
 {#each data.reviews as review}
 	<div class="space-y-3 bg-slate-100 p-5 text-left" id={review.id}>
-		<p class="font-bold">
+		<p class="break-all font-bold">
 			{uniqueNamesGenerator({
 				dictionaries: [adjectives, colors, animals],
 				seed: review.user_id
