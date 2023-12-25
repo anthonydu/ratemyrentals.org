@@ -26,14 +26,29 @@
 		suggestions = [];
 	};
 
-	const handleInput = () => {
-		$page.data.supabase
-			.from('places')
-			.select()
-			.ilike('country_code', $searchFilter)
-			.textSearch('searchable', $searchQuery ? $searchQuery.split(' ').join(':* & ') + ':*' : '')
-			.limit(5)
-			.then(({ data }) => (suggestions = data || []));
+	const handleInput = async () => {
+		const {
+			data: { user }
+		} = await $page.data.supabase.auth.getUser();
+		if (user) {
+			$page.data.supabase
+				.from('places')
+				.select()
+				.ilike('country_code', $searchFilter)
+				.or(`verified.eq.true,created_by.eq.${user.id}`)
+				.textSearch('searchable', $searchQuery ? $searchQuery.split(' ').join(':* & ') + ':*' : '')
+				.limit(5)
+				.then(({ data }) => (suggestions = data || []));
+		} else {
+			$page.data.supabase
+				.from('places')
+				.select()
+				.ilike('country_code', $searchFilter)
+				.eq('verified', true)
+				.textSearch('searchable', $searchQuery ? $searchQuery.split(' ').join(':* & ') + ':*' : '')
+				.limit(5)
+				.then(({ data }) => (suggestions = data || []));
+		}
 	};
 
 	const handleChange = () => {

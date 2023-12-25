@@ -22,7 +22,6 @@ export async function load({ url, locals: { supabase } }) {
 				.ilike('country_code', filter)
 				.or(`verified.eq.true,created_by.eq.${user.id}`)
 				.textSearch('searchable', query.split(' ').join(':* & ') + ':*')
-				.limit(5)
 		).data;
 	} else {
 		data = (
@@ -32,7 +31,6 @@ export async function load({ url, locals: { supabase } }) {
 				.ilike('country_code', filter)
 				.eq('verified', true)
 				.textSearch('searchable', query.split(' ').join(':* & ') + ':*')
-				.limit(5)
 		).data;
 	}
 
