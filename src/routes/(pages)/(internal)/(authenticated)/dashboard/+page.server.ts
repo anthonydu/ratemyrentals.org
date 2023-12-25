@@ -1,20 +1,17 @@
 import type { Place, Review } from '$lib/types.js';
-import { error, redirect } from '@sveltejs/kit';
+import type { Session } from '@supabase/supabase-js';
+import { error } from '@sveltejs/kit';
 
-export const load = async ({ locals }) => {
-	const session = await locals.getSession();
+export const load = async ({ locals: { supabase }, parent }) => {
+	const { session }: { session: Session } = await parent();
 
-	if (!session) {
-		throw redirect(302, '/');
-	}
-
-	const { data: reviews }: { data: Review[] | null } = await locals.supabase
+	const { data: reviews }: { data: Review[] | null } = await supabase
 		.from('reviews')
 		.select()
 		.eq('user_id', session.user.id)
 		.order('created_at', { ascending: false });
 
-	const { data: places }: { data: Place[] | null } = await locals.supabase.from('places').select();
+	const { data: places }: { data: Place[] | null } = await supabase.from('places').select();
 
 	if (!reviews || !places) throw error(500, 'Internal server error');
 

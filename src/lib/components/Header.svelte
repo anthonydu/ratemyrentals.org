@@ -40,7 +40,7 @@
 					else state = State.Search;
 				}}
 			>
-				<SearchIcon className="h-5 w-5" />
+				<SearchIcon class="h-5 w-5" />
 			</button>
 			<button
 				class="flex h-10 w-10 items-center justify-center md:hidden"
@@ -50,7 +50,7 @@
 					else state = State.Burger;
 				}}
 			>
-				<Hamburger className="h-5 w-5" />
+				<Hamburger class="h-5 w-5" />
 			</button>
 			<div
 				class={`${

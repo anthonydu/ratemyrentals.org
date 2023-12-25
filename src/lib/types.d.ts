@@ -1,24 +1,30 @@
-export type Place = {
-	id: string;
-	name?: string;
+export type PlaceSubmission = {
+	name: string;
 	street_address: string;
-	country_code: string;
-	administrative_area: string;
 	locality: string;
+	administrative_area: string;
+	country_code: string;
+};
+
+export type Place = PlaceSubmission & {
+	id: string;
 	created_by: string;
 	verified: boolean;
 };
 
-export type Review = {
-	id: string;
-	created_at: string;
+export type ReviewSubmission = {
 	body: string;
 	place_id: string;
-	user_id: string;
 	rating: number;
-	landlord?: string;
-	unit?: string;
-	rent?: number;
+	landlord: string;
+	unit: string;
+	rent: number;
+};
+
+export type Review = ReviewSubmission & {
+	id: string;
+	created_at: string;
+	user_id: string;
 };
 
 export type DialogState =

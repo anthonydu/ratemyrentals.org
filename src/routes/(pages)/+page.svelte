@@ -27,7 +27,7 @@
 			type="button"
 			on:click={() => (menuOpen = !menuOpen)}
 		>
-			<Hamburger className="h-5 w-5" />
+			<Hamburger class="h-5 w-5" />
 		</button>
 		<div
 			class={`${

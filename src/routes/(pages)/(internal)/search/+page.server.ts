@@ -1,7 +1,9 @@
 import type { Place } from '$lib/types';
+import type { Session } from '@supabase/supabase-js';
 import { redirect } from '@sveltejs/kit';
 
-export async function load({ url, locals: { supabase } }) {
+export async function load({ url, locals: { supabase }, parent }) {
+	const { session }: { session: Session | null } = await parent();
 	const searchParams = url.searchParams;
 
 	const query = searchParams.get('q');
@@ -9,18 +11,14 @@ export async function load({ url, locals: { supabase } }) {
 
 	if (!query) throw redirect(302, '/');
 
-	const {
-		data: { user }
-	} = await supabase.auth.getUser();
-
 	let data: Place[] | null;
-	if (user) {
+	if (session) {
 		data = (
 			await supabase
 				.from('places')
 				.select()
 				.ilike('country_code', filter)
-				.or(`verified.eq.true,created_by.eq.${user.id}`)
+				.or(`verified.eq.true,created_by.eq.${session.user.id}`)
 				.textSearch('searchable', query.split(' ').join(':* & ') + ':*')
 		).data;
 	} else {

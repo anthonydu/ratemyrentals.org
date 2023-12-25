@@ -24,11 +24,9 @@
 		<h3>{full_address(place)}</h3>
 		<div class="flex flex-row items-center gap-1">
 			{#each { length: 5 } as _, i}
-				<House
-					className={`h-5 w-5 ${i < place.avgRating ? 'text-yellow-500' : 'text-slate-300'}`}
-				/>
+				<House class={`h-5 w-5 ${i < place.avgRating ? 'text-yellow-500' : 'text-slate-300'}`} />
 			{/each}
-			<p class="ml-2">{place.numRatings}</p>
+			<p class="ml-2">{place.numRatings} ratings</p>
 		</div>
 	</button>
 {/each}

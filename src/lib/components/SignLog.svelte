@@ -9,12 +9,10 @@
 	export let state: DialogState = 'Closed';
 
 	let dialog: HTMLDialogElement;
-	let input: HTMLInputElement;
 
 	$: if (dialog) {
 		if (state !== 'Closed') {
 			dialog.showModal();
-			if (state === 'Log In or Sign Up') setTimeout(() => input.focus(), 100);
 		} else dialog.close();
 	}
 
@@ -83,8 +81,8 @@
 					id="email"
 					autocomplete="email"
 					bind:value={email}
-					bind:this={input}
 					required
+					autofocus
 				/>
 				<button class="rounded-lg bg-blue-600 py-3 text-white" type="submit">
 					Log In or Sign Up with Email
@@ -94,7 +92,7 @@
 
 		{#if state === 'Loading'}
 			<div class="flex h-40 items-center justify-center self-center justify-self-center">
-				<LoadingSpinner className="w-16 h-16" />
+				<LoadingSpinner class="h-16 w-16" />
 			</div>
 		{/if}
 		{#if state === 'Check Your Inbox'}

@@ -139,7 +139,7 @@
 		{#if type === 'primary'}
 			<button type="submit" class={`${classes.button}`}>
 				<div class="flex items-center justify-center">
-					<SearchIcon className="h-2/5 w-2/5" />
+					<SearchIcon class="h-2/5 w-2/5" />
 				</div>
 			</button>
 		{/if}

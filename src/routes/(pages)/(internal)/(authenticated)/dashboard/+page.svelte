@@ -21,20 +21,32 @@
 			class="space-y-3 bg-slate-100 p-5 text-left"
 			on:click={() => handleClick(review)}
 		>
-			<p class="font-bold">{review.place.name || review.place.street_address}</p>
-			<div class="flex flex-row items-center gap-1">
-				{#each { length: 5 } as _, i}
-					<House
-						className={`h-5 w-5 ${i < review.rating ? 'text-yellow-500' : 'text-slate-300'}`}
-					/>
-				{/each}
-				<p class="mx-0.5 text-slate-500">&centerdot;</p>
+			<div class="flex flex-col justify-between sm:flex-row">
+				<p class="font-bold">{review.place.name || review.place.street_address}</p>
 				<p>
 					{new Date(review.created_at).toLocaleString('default', {
 						month: 'long',
 						year: 'numeric'
 					})}
 				</p>
+			</div>
+			<div class="flex flex-col flex-wrap gap-3 sm:flex-row sm:items-center">
+				<div class="flex flex-row gap-1">
+					{#each { length: 5 } as _, i}
+						<House class={`h-5 w-5 ${i < review.rating ? 'text-yellow-500' : 'text-slate-300'}`} />
+					{/each}
+				</div>
+				<div class="flex flex-row flex-wrap gap-3">
+					{#if review.unit}
+						<p class="w-max">Unit: <b>{review.unit}&#9;</b></p>
+					{/if}
+					{#if review.landlord}
+						<p class="w-max">Owner: <b>{review.landlord}</b></p>
+					{/if}
+					{#if review.rent}
+						<p class="w-max">Rent: <b>{review.rent}</b></p>
+					{/if}
+				</div>
 			</div>
 			<p>{review.body}</p>
 		</button>

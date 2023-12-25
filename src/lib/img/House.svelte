@@ -1,16 +1,10 @@
-<script lang="ts">
-	export let className: string;
-</script>
-
 <svg
 	xmlns="http://www.w3.org/2000/svg"
 	xmlns:xlink="http://www.w3.org/1999/xlink"
-	width="800px"
-	height="800px"
 	viewBox="0 0 64 64"
 	enable-background="new 0 0 64 64"
 	xml:space="preserve"
-	class={className}
+	{...$$restProps}
 >
 	<path
 		fill="currentColor"

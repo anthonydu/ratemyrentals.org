@@ -16,11 +16,9 @@
 	<h2>{full_address(data.place)}</h2>
 	<div class="flex flex-row items-center gap-1">
 		{#each { length: 5 } as _, i}
-			<House
-				className={`h-5 w-5 ${i < data.place.avgRating ? 'text-yellow-500' : 'text-slate-300'}`}
-			/>
+			<House class={`h-8 w-8 ${i < data.place.avgRating ? 'text-yellow-500' : 'text-slate-300'}`} />
 		{/each}
-		<p class="ml-2">{data.place.numRatings}</p>
+		<p class="ml-2">{data.place.numRatings} ratings</p>
 	</div>
 </div>
 
@@ -36,7 +34,7 @@
 
 <AuthButton
 	classes={{ button: 'w-max rounded-full bg-blue-600 px-6 py-3 text-white' }}
-	href="/add-rating"
+	href={`/add-rating?id=${data.place.id}`}
 >
 	Add a rating
 </AuthButton>
@@ -61,9 +59,7 @@
 		<div class="flex flex-col flex-wrap gap-3 sm:flex-row sm:items-center">
 			<div class="flex flex-row gap-1">
 				{#each { length: 5 } as _, i}
-					<House
-						className={`h-5 w-5 ${i < review.rating ? 'text-yellow-500' : 'text-slate-300'}`}
-					/>
+					<House class={`h-5 w-5 ${i < review.rating ? 'text-yellow-500' : 'text-slate-300'}`} />
 				{/each}
 			</div>
 			<div class="flex flex-row flex-wrap gap-3">

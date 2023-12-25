@@ -1,8 +1,4 @@
-<script lang="ts">
-	export let className: string;
-</script>
-
-<svg class={className} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" {...$$restProps}>
 	<radialGradient id="a8" cx=".66" fx=".66" cy=".3125" fy=".3125" gradientTransform="scale(1.5)">
 		<stop offset="0" stop-color="#1D4ED8"></stop><stop
 			offset=".3"

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { PUBLIC_GOOGLE_MAPS_API_KEY } from '$env/static/public';
-	import type { Place } from '$lib/types';
+	import type { Place, PlaceSubmission } from '$lib/types';
 	import { goto } from '$app/navigation';
 	import { full_address } from '$lib/utils.js';
 	import type { protos } from '@googlemaps/addressvalidation';
@@ -13,13 +13,7 @@
 	let administrativeArea = '';
 	let regionCode = $searchFilter;
 	let complexName = '';
-	let validatedPlace: {
-		street_address: string;
-		locality: string;
-		administrative_area: string;
-		country_code: string;
-		name: string;
-	} | null = null;
+	let validatedPlace: PlaceSubmission | null = null;
 
 	let dialog: HTMLDialogElement;
 
@@ -125,7 +119,7 @@
 		<label for="filter">Country</label>
 		<div class="relative">
 			<select
-				class="w-full appearance-none rounded border-2 border-slate-300 px-2.5 py-1.5"
+				class="w-full appearance-none rounded-lg border-2 border-slate-300 px-2.5 py-1.5"
 				name="filter"
 				id="filter"
 				bind:value={regionCode}
@@ -133,6 +127,14 @@
 				required
 			>
 				<optgroup label="Select a Country">
+					<option value="US">United States</option>
+					<option value="GB">United Kingdom</option>
+					<option value="CA">Canada</option>
+					<option value="AU">Australia</option>
+					<option value="SG">Singapore</option>
+					<option value="NZ">New Zealand</option>
+					<option value="IE">Ireland</option>
+					<option value="divider" disabled>-----------</option>
 					<option value="AR">Argentina</option>
 					<option value="AU">Australia</option>
 					<option value="AT">Austria</option>
@@ -180,7 +182,7 @@
 	<div class="flex flex-col gap-1">
 		<label for="street-address">Address</label>
 		<input
-			class="rounded border-2 border-slate-300 px-2.5 py-1.5 focus:placeholder:text-transparent"
+			class="rounded-lg border-2 border-slate-300 px-2.5 py-1.5 focus:placeholder:text-transparent"
 			name="street-address"
 			type="text"
 			id="street-address"
@@ -193,7 +195,7 @@
 	<div class="flex flex-col gap-1">
 		<label for="city">City</label>
 		<input
-			class="rounded border-2 border-slate-300 px-2.5 py-1.5 focus:placeholder:text-transparent"
+			class="rounded-lg border-2 border-slate-300 px-2.5 py-1.5 focus:placeholder:text-transparent"
 			name="city"
 			type="text"
 			id="city"
@@ -206,7 +208,7 @@
 	<div class="flex flex-col gap-1">
 		<label for="administrative-area">Province/State</label>
 		<input
-			class="rounded border-2 border-slate-300 px-2.5 py-1.5 focus:placeholder:text-transparent"
+			class="rounded-lg border-2 border-slate-300 px-2.5 py-1.5 focus:placeholder:text-transparent"
 			name="administrative-area"
 			type="text"
 			id="administrative-area"
@@ -219,7 +221,7 @@
 	<div class="flex flex-col gap-1">
 		<label for="complex-name">Complex Name (optional)</label>
 		<input
-			class="rounded border-2 border-slate-300 px-2.5 py-1.5 focus:placeholder:text-transparent"
+			class="rounded-lg border-2 border-slate-300 px-2.5 py-1.5 focus:placeholder:text-transparent"
 			name="complex-name"
 			type="text"
 			id="complex-name"
@@ -227,7 +229,7 @@
 			placeholder="e.g. Central Park Tower"
 		/>
 	</div>
-	<button class="mt-1 rounded bg-blue-600 py-2.5 text-white" type="submit">Submit</button>
+	<button class="mt-1 rounded-lg bg-blue-600 py-2.5 text-white" type="submit">Submit</button>
 </form>
 
 <dialog class="w-full max-w-sm rounded-lg bg-white p-10" bind:this={dialog}>
