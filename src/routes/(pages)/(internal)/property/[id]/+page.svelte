@@ -24,6 +24,16 @@
 	</div>
 </div>
 
+{#if !data.place.verified}
+	<p class="text-red-500">
+		This property is currently not showing up in search results because it was recently created and
+		had not been verified by the administrator of the website. You can still rate this property
+		while it is awaiting verification, but if you'd like to add a rating later, please save this
+		page's URL before you close the tab, otherwise you'll not be able find your way back to this
+		page before the property is verified.
+	</p>
+{/if}
+
 <AuthButton
 	classes={{ button: 'w-max rounded-full bg-blue-600 px-6 py-3 text-white' }}
 	href="/add-rating"
