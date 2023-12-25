@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 
 export async function GET({ locals }) {
-	const { data } = await locals.supabase.from('places').select('id');
+	const { data } = await locals.supabase.from('places').select('id').eq('verified', true);
 
 	if (!data) throw error(502, 'Failed to fetch data from Supabase');
 
@@ -10,7 +10,7 @@ export async function GET({ locals }) {
 	data.forEach(({ id }: { id: string }) => {
 		urls += /* xml */ `
 		<url>
-			<loc>https://www.ratemyrentals.org/${id}</loc>
+			<loc>https://www.ratemyrentals.org/property/${id}</loc>
 		</url>`;
 	});
 
