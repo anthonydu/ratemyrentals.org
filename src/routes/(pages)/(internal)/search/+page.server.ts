@@ -7,7 +7,7 @@ export async function load({ url, locals: { supabase }, parent }) {
 	const searchParams = url.searchParams;
 
 	const query = searchParams.get('q');
-	const filter = searchParams.get('filter') || '%';
+	const filter = searchParams.get('filter') || '';
 
 	if (!query) throw redirect(302, '/');
 

@@ -30,7 +30,7 @@
 			types: ['premise', 'street_address'],
 			// "address_components" is not used here but causes a shorter "name"
 			fields: ['address_components', 'name'],
-			componentRestrictions: { country: $searchFilter.toLowerCase() }
+			componentRestrictions: { country: $searchFilter ? $searchFilter.toLowerCase() : undefined }
 		});
 		autocomplete.addListener('place_changed', () => {
 			$searchQuery = autocomplete.getPlace().name;
@@ -44,7 +44,9 @@
 	};
 
 	const handleChange = () => {
-		autocomplete.setComponentRestrictions({ country: $searchFilter.toLowerCase() });
+		autocomplete.setComponentRestrictions({
+			country: $searchFilter ? $searchFilter.toLowerCase() : undefined
+		});
 		if ($page.url.pathname.startsWith('/search')) {
 			goto(encodeURI(`/search?q=${$searchQuery}&filter=${$searchFilter}`));
 		}
@@ -63,7 +65,7 @@
 			name="filter"
 		>
 			<optgroup label="Select a Region">
-				<option value="%">Worldwide</option>
+				<option value="">Worldwide</option>
 				<option value="US">United States</option>
 				<option value="GB">United Kingdom</option>
 				<option value="CA">Canada</option>
