@@ -1,8 +1,8 @@
 <script lang="ts">
-	import AddProperty from '$lib/components/AddProperty.svelte';
 	import { goto } from '$app/navigation';
 	import { full_address } from '$lib/utils.js';
 	import House from '$lib/img/House.svelte';
+	import AuthButton from '$lib/components/AuthButton.svelte';
 
 	export let data;
 </script>
@@ -33,5 +33,10 @@
 {/each}
 <div class="flex w-full flex-col items-center gap-3 bg-slate-100 px-5 py-10">
 	<p class="text-center text-lg">Can't find your rental?</p>
-	<AddProperty classes={{ button: 'rounded-full bg-blue-700 px-8 py-3 text-white' }}></AddProperty>
+	<AuthButton
+		classes={{ button: 'rounded-full bg-blue-700 px-8 py-3 text-white' }}
+		href="/add-property"
+	>
+		Add a property
+	</AuthButton>
 </div>

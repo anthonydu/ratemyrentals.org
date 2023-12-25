@@ -15,5 +15,8 @@ export async function load({ params, locals: { supabase } }) {
 		.eq('place_id', params.id)
 		.order('created_at', { ascending: false });
 
-	return { place: places[0], reviews: reviews || [] };
+	let avgRating = 0;
+	if (reviews) avgRating = reviews.reduce((acc, curr) => acc + curr.rating, 0) / reviews.length;
+
+	return { place: { ...places[0], avgRating }, reviews: reviews || [] };
 }

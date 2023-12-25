@@ -18,6 +18,7 @@ export type Review = {
 	rating: number;
 	landlord?: string;
 	unit?: string;
+	rent?: number;
 };
 
 export type DialogState =

@@ -10,15 +10,17 @@
 
 	let state: DialogState = 'Closed';
 
+	export let href: string;
+
 	const handleClick = () => {
 		if ($page.data.session) {
-			goto(encodeURI('/add-property'));
+			goto(encodeURI(href));
 		} else {
 			state = 'Log In or Sign Up';
 		}
 	};
 </script>
 
-<button class={classes.button} type="button" on:click={handleClick}>Add a property</button>
+<button class={classes.button} type="button" on:click={handleClick}><slot /></button>
 
 <SignLog showButtons={false} bind:state></SignLog>
