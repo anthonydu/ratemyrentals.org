@@ -36,12 +36,12 @@ export async function load({ url, locals: { supabase } }) {
 		).data;
 	}
 
-	const places: (Place & { avgRating: number })[] = await Promise.all(
+	const places: (Place & { numRatings: number; avgRating: number })[] = await Promise.all(
 		(data || []).map(async (place) => {
 			const { data } = await supabase.from('reviews').select('rating').eq('place_id', place.id);
 			let avgRating = 0;
 			if (data) avgRating = data.reduce((acc, curr) => acc + curr.rating, 0) / data.length;
-			return { ...place, avgRating };
+			return { ...place, numRatings: data?.length || 0, avgRating };
 		})
 	);
 

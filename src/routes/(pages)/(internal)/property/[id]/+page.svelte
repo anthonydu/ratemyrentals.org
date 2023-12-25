@@ -20,6 +20,7 @@
 				className={`h-5 w-5 ${i < data.place.avgRating ? 'text-yellow-500' : 'text-slate-300'}`}
 			/>
 		{/each}
+		<p class="ml-2">{data.place.numRatings}</p>
 	</div>
 </div>
 
@@ -47,7 +48,7 @@
 				{new Date(review.created_at).toLocaleString('default', { month: 'long', year: 'numeric' })}
 			</p>
 		</div>
-		<div class="flex flex-col flex-wrap gap-3 sm:flex-row">
+		<div class="flex flex-col flex-wrap gap-3 sm:flex-row sm:items-center">
 			<div class="flex flex-row gap-1">
 				{#each { length: 5 } as _, i}
 					<House
