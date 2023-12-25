@@ -252,5 +252,3 @@
 		</button>
 	</div>
 </dialog>
-
-<!-- TODO: change "reviews" to "ratings" -->

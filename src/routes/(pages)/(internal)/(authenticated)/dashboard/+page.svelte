@@ -12,7 +12,7 @@
 
 <h1 class="text-3xl">Dashboard</h1>
 
-<h2 class="text-2xl">Your Reviews</h2>
+<h2 class="text-2xl">Your Ratings</h2>
 
 <div class="flex flex-col gap-5">
 	{#each data.reviews as review}

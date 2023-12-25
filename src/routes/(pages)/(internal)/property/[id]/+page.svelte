@@ -16,7 +16,7 @@
 </div>
 
 {#if data.reviews.length === 0}
-	<p>No reviews yet.</p>
+	<p>No ratings yet.</p>
 {/if}
 
 {#each data.reviews as review}
