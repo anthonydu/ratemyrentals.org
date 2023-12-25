@@ -18,7 +18,7 @@ export type ReviewSubmission = {
 	rating: number;
 	landlord: string;
 	unit: string;
-	rent: number;
+	rent?: number;
 };
 
 export type Review = ReviewSubmission & {

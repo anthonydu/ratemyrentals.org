@@ -38,7 +38,7 @@
 				</div>
 				<div class="flex flex-row flex-wrap gap-3">
 					{#if review.unit}
-						<p class="w-max">Unit: <b>{review.unit}&#9;</b></p>
+						<p class="w-max">Unit: <b>{review.unit}</b></p>
 					{/if}
 					{#if review.landlord}
 						<p class="w-max">Owner: <b>{review.landlord}</b></p>

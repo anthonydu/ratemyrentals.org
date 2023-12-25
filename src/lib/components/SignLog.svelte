@@ -74,6 +74,7 @@
 		{#if state === 'Log In or Sign Up'}
 			<form class="contents" on:submit|preventDefault={handleSubmit}>
 				<label for="email">Email Address</label>
+				<!-- svelte-ignore a11y-autofocus -->
 				<input
 					class="rounded-lg border-2 border-slate-300 p-3 text-black"
 					name="email"

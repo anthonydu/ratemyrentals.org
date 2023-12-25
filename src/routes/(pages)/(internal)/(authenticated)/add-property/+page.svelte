@@ -96,7 +96,9 @@
 			return;
 		}
 
-		if ((await data.supabase.from('places').insert(validatedPlace)).status === 201) {
+		const { status, error } = await data.supabase.from('places').insert(validatedPlace);
+
+		if (status === 201) {
 			alert('Property added successfully.');
 			const { data: newPlace }: { data: Place[] | null } = await data.supabase
 				.from('places')
@@ -107,7 +109,7 @@
 				.eq('country_code', validatedPlace.country_code);
 			if (newPlace?.[0]) goto(`/property/${newPlace[0].id}`);
 		} else {
-			alert('Something went wrong. Please try again.');
+			alert('Submission failed: ' + error?.details);
 		}
 	};
 </script>
@@ -219,7 +221,7 @@
 		/>
 	</div>
 	<div class="flex flex-col gap-1">
-		<label for="complex-name">Complex Name (optional)</label>
+		<label for="complex-name">Complex Name <span class="text-slate-400">(optional)</span></label>
 		<input
 			class="rounded-lg border-2 border-slate-300 px-2.5 py-1.5 focus:placeholder:text-transparent"
 			name="complex-name"
