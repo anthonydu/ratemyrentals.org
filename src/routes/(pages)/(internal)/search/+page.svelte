@@ -14,21 +14,33 @@
 <h1>
 	Results for "{data.query}"
 </h1>
-{#each data.places as place}
+{#each { length: data.places.length } as _, i}
 	<button
 		type="button"
 		class="space-y-3 bg-slate-100 p-5 text-left"
-		on:click={() => goto(encodeURI(`/property/${place.id}`))}
+		on:click={() => goto(encodeURI(`/property/${data.places[i].id}`))}
 	>
-		<h2 class="text-2xl font-black">{place.name || place.street_address}</h2>
-		<h3>{full_address(place)}</h3>
+		<h2 class="text-2xl font-bold">{data.places[i].name || data.places[i].street_address}</h2>
+		<h3>{full_address(data.places[i])}</h3>
 		<div class="flex flex-row items-center gap-1">
-			{#each { length: 5 } as _, i}
-				<House class={`h-5 w-5 ${i < place.avgRating ? 'text-yellow-500' : 'text-slate-300'}`} />
+			{#each { length: 5 } as _, j}
+				<House
+					class={`h-5 w-5 ${j < data.places[i].avgRating ? 'text-yellow-500' : 'text-slate-300'}`}
+				/>
 			{/each}
-			<p class="ml-2">{place.numRatings} ratings</p>
+			<p class="ml-2">{data.places[i].numRatings} ratings</p>
 		</div>
 	</button>
+	{#if (i + 1) % 3 === 0}
+		<ins
+			class="adsbygoogle"
+			style="display:block"
+			data-ad-format="fluid"
+			data-ad-layout-key="-fx-15+47-76+6v"
+			data-ad-client="ca-pub-7450570197815362"
+			data-ad-slot="4441530623"
+		></ins>
+	{/if}
 {/each}
 <div class="flex w-full flex-col items-center gap-3 bg-slate-100 py-8">
 	<p class="text-center text-lg">Can't find your rental?</p>
