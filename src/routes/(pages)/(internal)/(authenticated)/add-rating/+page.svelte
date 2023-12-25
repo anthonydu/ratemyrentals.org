@@ -34,6 +34,10 @@
 	let hoveringHouse = false;
 </script>
 
+<svelte:head>
+	<title>Rate {data.place.name || data.place.street_address} | Rate My Rentals</title>
+</svelte:head>
+
 <div>
 	<h1 class="text-3xl">Rate <b>{data.place.name || data.place.street_address}</b></h1>
 	<h2>{full_address(data.place)}</h2>

@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import House from '$lib/img/House.svelte';
 	import type { Place, Review } from '$lib/types.js';
+	import { adjectives, animals, colors, uniqueNamesGenerator } from 'unique-names-generator';
 
 	export let data;
 
@@ -10,7 +11,21 @@
 	};
 </script>
 
-<h1 class="text-3xl">Dashboard</h1>
+<svelte:head>
+	<title>Account Dashboard | Rate My Rentals</title>
+</svelte:head>
+
+<h1 class="text-3xl">Account Dashboard</h1>
+
+<p>
+	Display name:
+	<b>
+		{uniqueNamesGenerator({
+			dictionaries: [adjectives, colors, animals],
+			seed: data.session.user.id
+		})}
+	</b>
+</p>
 
 <h2 class="text-2xl">Your Ratings</h2>
 

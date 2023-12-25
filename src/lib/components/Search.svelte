@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { searchFilter, searchQuery } from '$lib/store';
-	import type { Place } from '$lib/types';
 	import SearchIcon from '$lib/img/SearchIcon.svelte';
 	import { page } from '$app/stores';
-	import { full_address } from '$lib/utils';
-
-	let suggestions: Place[] = [];
+	import { PUBLIC_GOOGLE_MAPS_API_KEY } from '$env/static/public';
+	import { Loader } from '@googlemaps/js-api-loader';
+	import { onMount } from 'svelte';
 
 	export let classes: {
 		form: string;
@@ -17,41 +16,35 @@
 	export let type = 'primary';
 	export let autofocus = false;
 
+	let input: HTMLInputElement;
+
+	let autocomplete: any;
+	onMount(async () => {
+		const loader = new Loader({
+			apiKey: PUBLIC_GOOGLE_MAPS_API_KEY,
+			version: 'weekly',
+			libraries: ['places']
+		});
+		const places = await loader.importLibrary('places');
+		autocomplete = new places.Autocomplete(input, {
+			types: ['premise', 'street_address'],
+			// "address_components" is not used here but causes a shorter "name"
+			fields: ['address_components', 'name'],
+			componentRestrictions: { country: $searchFilter.toLowerCase() }
+		});
+		autocomplete.addListener('place_changed', () => {
+			$searchQuery = autocomplete.getPlace().name;
+			console.log(JSON.stringify(autocomplete.getPlace(), null, 2));
+			goto(encodeURI(`/search?q=${autocomplete.getPlace().name}&filter=${$searchFilter}`));
+		});
+	});
+
 	const handleSubmit = () => {
 		goto(encodeURI(`/search?q=${$searchQuery}&filter=${$searchFilter}`));
 	};
-	const handleClick = (autocompleteQuery: string) => {
-		searchQuery.set(autocompleteQuery);
-		goto(encodeURI(`/search?q=${autocompleteQuery}&filter=${$searchFilter}`));
-		suggestions = [];
-	};
-
-	const handleInput = async () => {
-		const {
-			data: { user }
-		} = await $page.data.supabase.auth.getUser();
-		if (user) {
-			$page.data.supabase
-				.from('places')
-				.select()
-				.ilike('country_code', $searchFilter)
-				.or(`verified.eq.true,created_by.eq.${user.id}`)
-				.textSearch('searchable', $searchQuery ? $searchQuery.split(' ').join(':* & ') + ':*' : '')
-				.limit(5)
-				.then(({ data }) => (suggestions = data || []));
-		} else {
-			$page.data.supabase
-				.from('places')
-				.select()
-				.ilike('country_code', $searchFilter)
-				.eq('verified', true)
-				.textSearch('searchable', $searchQuery ? $searchQuery.split(' ').join(':* & ') + ':*' : '')
-				.limit(5)
-				.then(({ data }) => (suggestions = data || []));
-		}
-	};
 
 	const handleChange = () => {
+		autocomplete.setComponentRestrictions({ country: $searchFilter.toLowerCase() });
 		if ($page.url.pathname.startsWith('/search')) {
 			goto(encodeURI(`/search?q=${$searchQuery}&filter=${$searchFilter}`));
 		}
@@ -63,10 +56,7 @@
 		<select
 			class={`${classes.select} relative appearance-none focus:outline-none`}
 			bind:value={$searchFilter}
-			on:change={() => {
-				handleInput();
-				handleChange();
-			}}
+			on:change={() => handleChange()}
 			on:mouseleave={(e) => {
 				e.currentTarget.blur();
 			}}
@@ -132,8 +122,7 @@
 			enterkeyhint="search"
 			placeholder="Enter an address"
 			bind:value={$searchQuery}
-			on:input={handleInput}
-			on:focus={handleInput}
+			bind:this={input}
 			{autofocus}
 		/>
 		{#if type === 'primary'}
@@ -143,21 +132,5 @@
 				</div>
 			</button>
 		{/if}
-		<div
-			class="invisible absolute top-full flex translate-y-1 flex-col overflow-hidden rounded-md bg-white shadow-lg peer-focus:visible [&:has(>_button:hover)]:visible"
-		>
-			{#each suggestions as suggestion}
-				<button
-					type="button"
-					class="p-3 text-left text-black hover:bg-slate-200"
-					on:click={() => handleClick(suggestion.street_address)}
-				>
-					<p>{suggestion.name || suggestion.street_address}</p>
-					<p class="text-xs text-slate-400">
-						{full_address(suggestion)}
-					</p>
-				</button>
-			{/each}
-		</div>
 	</div>
 </form>

@@ -5,6 +5,8 @@
 	import { full_address } from '$lib/utils.js';
 	import type { protos } from '@googlemaps/addressvalidation';
 	import { searchFilter } from '$lib/store.js';
+	import { onMount } from 'svelte';
+	import { Loader } from '@googlemaps/js-api-loader';
 
 	export let data;
 
@@ -16,11 +18,59 @@
 	let validatedPlace: PlaceSubmission | null = null;
 
 	let dialog: HTMLDialogElement;
+	let addressInput: HTMLInputElement;
 
 	$: if (dialog) {
 		if (validatedPlace) dialog.showModal();
 		else dialog.close();
 	}
+
+	let autocomplete: any;
+	onMount(async () => {
+		const loader = new Loader({
+			apiKey: PUBLIC_GOOGLE_MAPS_API_KEY,
+			version: 'weekly',
+			libraries: ['places']
+		});
+		const places = await loader.importLibrary('places');
+		autocomplete = new places.Autocomplete(addressInput, {
+			types: ['premise', 'street_address'],
+			fields: ['address_components'],
+			componentRestrictions: { country: regionCode.toLowerCase() }
+		});
+		autocomplete.addListener('place_changed', () => {
+			for (const component of autocomplete.getPlace().address_components) {
+				const componentType = component.types[0];
+
+				switch (componentType) {
+					case 'premise': {
+						complexName = component.long_name;
+						break;
+					}
+
+					case 'street_number': {
+						streetAddress = component.long_name + ' ';
+						break;
+					}
+
+					case 'route': {
+						streetAddress += component.long_name;
+						break;
+					}
+
+					case 'locality': {
+						locality = component.long_name;
+						break;
+					}
+
+					case 'administrative_area_level_1': {
+						administrativeArea = component.short_name;
+						break;
+					}
+				}
+			}
+		});
+	});
 
 	const handleSubmit = async () => {
 		const res = await fetch(
@@ -114,6 +164,10 @@
 	};
 </script>
 
+<svelte:head>
+	<title>Add a Property | Rate My Rentals</title>
+</svelte:head>
+
 <h1 class="text-3xl">Add a Rental Property</h1>
 
 <form class="flex flex-col gap-4" on:submit|preventDefault={handleSubmit}>
@@ -125,6 +179,8 @@
 				name="filter"
 				id="filter"
 				bind:value={regionCode}
+				on:change={() =>
+					autocomplete.setComponentRestrictions({ country: regionCode.toLowerCase() })}
 				autocomplete="country-name"
 				required
 			>
@@ -189,6 +245,7 @@
 			type="text"
 			id="street-address"
 			bind:value={streetAddress}
+			bind:this={addressInput}
 			autocomplete="street-address"
 			placeholder="e.g. 225 West 57th Street"
 			required
