@@ -21,7 +21,7 @@
 			class="space-y-3 bg-slate-100 p-5 text-left"
 			on:click={() => handleClick(review)}
 		>
-			<p class="font-bold">{review.place.name}</p>
+			<p class="font-bold">{review.place.name || review.place.street_address}</p>
 			<div class="flex flex-row items-center gap-1">
 				{#each { length: 5 } as _, i}
 					<House

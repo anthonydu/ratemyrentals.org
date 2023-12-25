@@ -1,14 +1,12 @@
 export type Place = {
 	id: string;
-	name: string;
-	alt_names: string[];
+	name?: string;
 	street_address: string;
-	units: string[];
 	country_code: string;
 	administrative_area: string;
 	locality: string;
-	landlords: string[];
-	full_address?: string;
+	created_by: string;
+	verified: boolean;
 };
 
 export type Review = {
@@ -18,6 +16,8 @@ export type Review = {
 	place_id: string;
 	user_id: string;
 	rating: number;
+	landlord?: string;
+	unit?: string;
 };
 
 export type DialogState =

@@ -1,6 +1,8 @@
-import type { Place } from '$lib/types';
-
-export function set_full_address(place: Place) {
-	place.full_address = `${place.street_address}, ${place.locality}, ${place.administrative_area}, ${place.country_code}`;
-	return place;
+export function full_address(place: {
+	street_address: string;
+	locality: string;
+	administrative_area: string;
+	country_code: string;
+}) {
+	return `${place.street_address}, ${place.locality}, ${place.administrative_area}, ${place.country_code}`;
 }

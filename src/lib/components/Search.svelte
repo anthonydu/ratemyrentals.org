@@ -4,7 +4,7 @@
 	import type { Place } from '$lib/types';
 	import SearchIcon from '$lib/img/SearchIcon.svelte';
 	import { page } from '$app/stores';
-	import { set_full_address } from '$lib/utils';
+	import { full_address } from '$lib/utils';
 
 	let suggestions: Place[] = [];
 
@@ -33,7 +33,7 @@
 			.ilike('country_code', $searchFilter)
 			.textSearch('searchable', $searchQuery ? $searchQuery.split(' ').join(':* & ') + ':*' : '')
 			.limit(5)
-			.then(({ data }) => (suggestions = data?.map<Place>(set_full_address) || []));
+			.then(({ data }) => (suggestions = data || []));
 	};
 
 	const handleChange = () => {
@@ -137,9 +137,9 @@
 					class="p-3 text-left text-black hover:bg-slate-200"
 					on:click={() => handleClick(suggestion.street_address)}
 				>
-					<p>{suggestion.name}</p>
+					<p>{suggestion.name || suggestion.street_address}</p>
 					<p class="text-xs text-slate-400">
-						{suggestion.full_address}
+						{full_address(suggestion)}
 					</p>
 				</button>
 			{/each}

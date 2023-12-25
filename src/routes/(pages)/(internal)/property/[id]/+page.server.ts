@@ -1,6 +1,5 @@
 import type { Place, Review } from '$lib/types';
 import { error } from '@sveltejs/kit';
-import { set_full_address } from '$lib/utils.js';
 
 export async function load({ params, locals: { supabase } }) {
 	const { data: places }: { data: Place[] | null } = await supabase
@@ -9,8 +8,6 @@ export async function load({ params, locals: { supabase } }) {
 		.eq('id', params.id);
 
 	if (!places) throw error(404, 'Property not found');
-
-	places.forEach(set_full_address);
 
 	const { data: reviews }: { data: Review[] | null } = await supabase
 		.from('reviews')

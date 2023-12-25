@@ -1,7 +1,8 @@
 <script lang="ts">
 	import AddProperty from '$lib/components/AddProperty.svelte';
-
 	import { goto } from '$app/navigation';
+	import { full_address } from '$lib/utils.js';
+	import House from '$lib/img/House.svelte';
 
 	export let data;
 </script>
@@ -16,14 +17,18 @@
 {#each data.places as place}
 	<button
 		type="button"
-		class="bg-slate-100 p-5 text-left"
+		class="space-y-3 bg-slate-100 p-5 text-left"
 		on:click={() => goto(encodeURI(`/property/${place.id}`))}
 	>
-		<h2 class="text-2xl font-black">{place.name}</h2>
-		<h3>{place.full_address}</h3>
-		<p>Alternative names: {place.alt_names.join(', ') || 'none'}</p>
-		<p>Owned and managed by: {place.landlords.join(', ') || 'unknown'}</p>
-		<p>Apartments, suites, or units: {place.units.join(', ') || 'none'}</p>
+		<h2 class="text-2xl font-black">{place.name || place.street_address}</h2>
+		<h3>{full_address(place)}</h3>
+		<div class="flex flex-row gap-1">
+			{#each { length: 5 } as _, i}
+				<House
+					className={`h-5 w-5 ${i < place.avgRating ? 'text-yellow-500' : 'text-slate-300'}`}
+				/>
+			{/each}
+		</div>
 	</button>
 {/each}
 <div class="flex w-full flex-col items-center gap-3 bg-slate-100 px-5 py-10">

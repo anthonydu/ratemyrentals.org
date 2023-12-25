@@ -33,6 +33,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@googlemaps/addressvalidation": "^2.0.1",
 		"@supabase/ssr": "^0.0.10",
 		"@supabase/supabase-js": "^2.39.0",
 		"buffer": "^6.0.3",
