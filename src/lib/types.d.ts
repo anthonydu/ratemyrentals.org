@@ -19,6 +19,7 @@ export type ReviewBody = {
 	unit: string;
 	landlord: string;
 	rent?: number;
+	term?: [string, string];
 };
 
 export type ReviewSubmission = ReviewBody & {

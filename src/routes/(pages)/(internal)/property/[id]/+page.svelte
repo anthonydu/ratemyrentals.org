@@ -56,13 +56,16 @@
 				{new Date(review.created_at).toLocaleString('default', { month: 'long', year: 'numeric' })}
 			</p>
 		</div>
-		<div class="flex flex-col flex-wrap gap-3 sm:flex-row sm:items-center">
+		<div class="flex flex-col gap-3">
 			<div class="flex flex-row gap-1">
 				{#each { length: 5 } as _, i}
 					<House class={`h-5 w-5 ${i < review.rating ? 'text-yellow-500' : 'text-slate-300'}`} />
 				{/each}
 			</div>
 			<div class="flex flex-row flex-wrap gap-3">
+				{#if review.term?.[0] && review.term?.[1]}
+					<p class="w-max">From <b>{review.term?.[0]}</b> to <b>{review.term?.[1]}</b></p>
+				{/if}
 				{#if review.unit}
 					<p class="w-max">Unit: <b>{review.unit}</b></p>
 				{/if}

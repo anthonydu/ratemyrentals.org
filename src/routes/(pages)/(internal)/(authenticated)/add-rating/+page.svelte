@@ -11,6 +11,8 @@
 	let unit = data.review?.unit || '';
 	let landlord = data.review?.landlord || '';
 	let rent = data.review?.rent?.toString() || '';
+	let termStart = data.review?.term?.[0] || '';
+	let termEnd = data.review?.term?.[1] || '';
 
 	const handleSubmit = async () => {
 		const review: ReviewSubmission = {
@@ -20,6 +22,7 @@
 			unit,
 			landlord,
 			rent: parseInt(rent) || undefined,
+			term: termStart && termEnd ? [termStart, termEnd] : undefined,
 			edit_history: data.review
 				? [
 						...data.review.edit_history,
@@ -31,12 +34,22 @@
 								rating: data.review.rating,
 								unit: data.review.unit,
 								landlord: data.review.landlord,
-								rent: data.review.rent
+								rent: data.review.rent,
+								term: data.review.term
 							}
 						}
 					]
 				: []
 		};
+		if (review.term?.[0] && review.term?.[1]) {
+			if (new Date(review.term[0]).getTime() > new Date(review.term[1]).getTime()) {
+				alert('Lease term start date must not be before lease term end date.');
+				return;
+			}
+		} else if (review.term?.[0] || review.term?.[1]) {
+			alert('Both lease term start and end dates must be specified.');
+			return;
+		}
 		if (data.review) {
 			const { status, error } = await data.supabase
 				.from('reviews')
@@ -105,6 +118,26 @@
 				</button>
 			{/each}
 		</div>
+	</div>
+	<div class="flex flex-col gap-1">
+		<label for="term-start">From <span class="text-slate-400">(optional)</span></label>
+		<input
+			class="rounded-lg border-2 border-slate-300 px-2.5 py-1.5 focus:placeholder:text-transparent [&::-webkit-inner-spin-button]:appearance-none"
+			name="term-start"
+			type="date"
+			id="term-start"
+			bind:value={termStart}
+		/>
+	</div>
+	<div class="flex flex-col gap-1">
+		<label for="term-end">To <span class="text-slate-400">(optional)</span></label>
+		<input
+			class="rounded-lg border-2 border-slate-300 px-2.5 py-1.5 focus:placeholder:text-transparent [&::-webkit-inner-spin-button]:appearance-none"
+			name="term-end"
+			type="date"
+			id="term-end"
+			bind:value={termEnd}
+		/>
 	</div>
 	<div class="flex flex-col gap-1">
 		<label for="unit">Apt, suite, or unit <span class="text-slate-400">(optional)</span></label>
