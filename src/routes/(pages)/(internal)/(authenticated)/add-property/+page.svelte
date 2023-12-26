@@ -38,6 +38,39 @@
 			fields: ['address_components'],
 			componentRestrictions: { country: regionCode ? regionCode.toLowerCase() : undefined }
 		});
+		if (data.suggestedPlace) {
+			for (const component of data.suggestedPlace.addressComponents) {
+				const componentType = component.types[0];
+
+				switch (componentType) {
+					case 'premise': {
+						complexName = component.longText;
+						break;
+					}
+
+					case 'street_number': {
+						streetAddress = component.longText + ' ';
+						break;
+					}
+
+					case 'route': {
+						streetAddress += component.longText;
+						break;
+					}
+
+					case 'locality': {
+						locality = component.longText;
+						administrativeArea = component.shortText;
+						break;
+					}
+
+					case 'administrative_area_level_1': {
+						administrativeArea = component.shortText;
+						break;
+					}
+				}
+			}
+		}
 		autocomplete.addListener('place_changed', () => {
 			for (const component of autocomplete.getPlace().address_components) {
 				const componentType = component.types[0];

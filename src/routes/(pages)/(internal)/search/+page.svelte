@@ -12,7 +12,7 @@
 </svelte:head>
 
 <h1>
-	Results for "{data.query}"
+	{data.places.length} results for "{data.query}"
 </h1>
 {#each { length: data.places.length } as _, i}
 	<button
@@ -42,6 +42,18 @@
 		></ins>
 	{/if}
 {/each}
+{#if data.suggestedPlace}
+	<div class="flex w-full flex-col items-center gap-3 bg-slate-100 py-8">
+		<p class="text-center text-lg">Are you looking for:</p>
+		<p class="rounded-lg bg-white p-3">{data.suggestedPlace.formattedAddress}</p>
+		<AuthButton
+			classes={{ button: 'rounded-full bg-blue-700 px-8 py-3 text-white' }}
+			href={`/add-property?place_id=${data.suggestedPlace.id}`}
+		>
+			Add this property
+		</AuthButton>
+	</div>
+{/if}
 <div class="flex w-full flex-col items-center gap-3 bg-slate-100 py-8">
 	<p class="text-center text-lg">Can't find your rental?</p>
 	<AuthButton

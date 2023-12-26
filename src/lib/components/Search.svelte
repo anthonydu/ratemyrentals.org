@@ -29,13 +29,14 @@
 		autocomplete = new places.Autocomplete(input, {
 			types: ['premise', 'street_address'],
 			// "address_components" is not used here but causes a shorter "name"
-			fields: ['address_components', 'name'],
+			fields: ['address_components', 'name', 'place_id'],
 			componentRestrictions: { country: $searchFilter ? $searchFilter.toLowerCase() : undefined }
 		});
 		autocomplete.addListener('place_changed', () => {
-			$searchQuery = autocomplete.getPlace().name;
-			console.log(JSON.stringify(autocomplete.getPlace(), null, 2));
-			goto(encodeURI(`/search?q=${autocomplete.getPlace().name}&filter=${$searchFilter}`));
+			const place = autocomplete.getPlace();
+			$searchQuery = place.name;
+			console.log(JSON.stringify(place, null, 2));
+			goto(encodeURI(`/search?q=${place.name}&filter=${$searchFilter}&place_id=${place.place_id}`));
 		});
 	});
 

@@ -1,3 +1,4 @@
+import { PUBLIC_GOOGLE_MAPS_API_KEY } from '$env/static/public';
 import type { Place } from '$lib/types';
 import type { Session } from '@supabase/supabase-js';
 import { redirect } from '@sveltejs/kit';
@@ -7,7 +8,8 @@ export async function load({ url, locals: { supabase }, parent }) {
 	const searchParams = url.searchParams;
 
 	const query = searchParams.get('q');
-	const filter = searchParams.get('filter') || '';
+	const filter = searchParams.get('filter') || '%';
+	const placeId = searchParams.get('place_id');
 
 	if (!query) throw redirect(302, '/');
 
@@ -41,5 +43,16 @@ export async function load({ url, locals: { supabase }, parent }) {
 		})
 	);
 
-	return { places: places || [], query };
+	let suggestedPlace = null;
+	if (placeId) {
+		const res = await fetch(
+			`https://places.googleapis.com/v1/places/${placeId}?fields=id,formattedAddress&key=${PUBLIC_GOOGLE_MAPS_API_KEY}&languageCode=en`
+		);
+
+		suggestedPlace = await res.json();
+	}
+
+	console.log(suggestedPlace);
+
+	return { places: places || [], query, suggestedPlace };
 }
