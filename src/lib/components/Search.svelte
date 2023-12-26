@@ -123,7 +123,7 @@
 			type="search"
 			name="search"
 			enterkeyhint="search"
-			placeholder="Enter an address"
+			placeholder={`Enter an address${type === 'primary' ? ', street, or city' : ''}`}
 			bind:value={$searchQuery}
 			bind:this={input}
 			{autofocus}
