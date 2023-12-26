@@ -10,7 +10,7 @@ export const load = async ({ url, locals }) => {
 		.select()
 		.eq('id', placeId);
 
-	if (!placeId || !place?.[0]) throw redirect(302, '/');
+	if (!placeId || !place?.[0]) redirect(302, '/');
 
 	let review: Review | null = null;
 	if (reviewId)

@@ -11,7 +11,7 @@ export async function load({ url, locals: { supabase }, parent }) {
 	const filter = searchParams.get('filter') || '%';
 	const placeId = searchParams.get('place_id');
 
-	if (!query) throw redirect(302, '/');
+	if (!query) redirect(302, '/');
 
 	let data: Place[] | null;
 	if (session) {

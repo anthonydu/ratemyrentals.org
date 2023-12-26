@@ -10,13 +10,13 @@ export async function load({ params, locals: { supabase }, parent }) {
 		.select()
 		.eq('id', params.id);
 
-	if (!places) throw error(404, 'Property not found');
+	if (!places) error(404, 'Property not found');
 
 	if (!places[0].verified && session?.user.id !== places[0].created_by)
-		throw error(
-			401,
-			'Unauthorized: property not verified. if you created this property, please log in to view it'
-		);
+		error(
+        			401,
+        			'Unauthorized: property not verified. if you created this property, please log in to view it'
+        		);
 
 	const { data: reviews }: { data: Review[] | null } = await supabase
 		.from('reviews')
