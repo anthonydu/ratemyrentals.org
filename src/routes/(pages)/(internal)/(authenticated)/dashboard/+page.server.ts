@@ -9,6 +9,7 @@ export const load = async ({ locals: { supabase }, parent }) => {
 		.from('reviews')
 		.select()
 		.eq('user_id', session.user.id)
+		.eq('deleted', false)
 		.order('created_at', { ascending: false });
 
 	const { data: places }: { data: Place[] | null } = await supabase.from('places').select();
@@ -20,7 +21,7 @@ export const load = async ({ locals: { supabase }, parent }) => {
 		const place = places.find((place) => place.id === review.place_id);
 		if (!place)
 			throw error(500, `Internal server error: place with id ${review.place_id} not found`);
-		return { ...review, place };
+		return { review, place };
 	});
 
 	return { reviews: joined };

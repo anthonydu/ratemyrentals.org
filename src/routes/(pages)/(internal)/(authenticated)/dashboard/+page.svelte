@@ -6,12 +6,29 @@
 
 	export let data;
 
-	const handleClick = (review: Review & { place: Place }) => {
-		goto(encodeURI(`/property/${review.place.id}#${review.id}`));
+	const handleClick = (review: Review, place: Place) => {
+		goto(encodeURI(`/property/${place.id}#${review.id}`));
 	};
 
 	const handleEdit = (review: Review) => {
 		goto(encodeURI(`/add-rating?place_id=${review.place_id}&review_id=${review.id}`));
+	};
+
+	const handleDelete = async (review: Review) => {
+		if (confirm('Are you sure you want to delete this rating?')) {
+			const { status, error } = await data.supabase
+				.from('reviews')
+				.update({
+					...review,
+					deleted: true,
+					deleted_at: new Date()
+				})
+				.eq('id', review.id);
+			if (status < 300) {
+				alert('Rating deleted.');
+				window.location.reload();
+			} else alert(error?.message);
+		}
 	};
 </script>
 
@@ -38,14 +55,14 @@
 {/if}
 
 <div class="flex flex-col gap-5">
-	{#each data.reviews as review}
+	{#each data.reviews as { review, place }}
 		<button
 			type="button"
 			class="space-y-3 bg-slate-100 p-5 text-left"
-			on:click={() => handleClick(review)}
+			on:click={() => handleClick(review, place)}
 		>
 			<div class="flex flex-col justify-between sm:flex-row">
-				<p class="font-bold">{review.place.name || review.place.street_address}</p>
+				<p class="font-bold">{place.name || place.street_address}</p>
 				<div class="flex flex-row gap-3">
 					<p>
 						{new Date(review.created_at).toLocaleString()}
@@ -53,8 +70,17 @@
 					<button
 						class="hover:underline"
 						type="button"
-						on:click|stopPropagation={() => handleEdit(review)}>Edit</button
+						on:click|stopPropagation={() => handleEdit(review)}
 					>
+						Edit
+					</button>
+					<button
+						class="hover:underline"
+						type="button"
+						on:click|stopPropagation={() => handleDelete(review)}
+					>
+						Delete
+					</button>
 				</div>
 			</div>
 			<div class="flex flex-col gap-3">
