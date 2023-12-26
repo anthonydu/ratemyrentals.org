@@ -3,7 +3,7 @@ import { error } from '@sveltejs/kit';
 export async function GET({ locals }) {
 	const { data } = await locals.supabase.from('places').select('id').eq('verified', true);
 
-	if (!data) throw error(502, 'Failed to fetch data from Supabase');
+	if (!data) throw error(500, 'Internal server error: failed to fetch places');
 
 	let urls = '';
 

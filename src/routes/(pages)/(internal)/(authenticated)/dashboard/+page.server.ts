@@ -13,11 +13,13 @@ export const load = async ({ locals: { supabase }, parent }) => {
 
 	const { data: places }: { data: Place[] | null } = await supabase.from('places').select();
 
-	if (!reviews || !places) throw error(500, 'Internal server error');
+	if (!reviews || !places)
+		throw error(500, 'Internal server error: failed to fetch places and reviews');
 
 	const joined = reviews.map((review) => {
 		const place = places.find((place) => place.id === review.place_id);
-		if (!place) throw error(500, 'Internal server error');
+		if (!place)
+			throw error(500, `Internal server error: place with id ${review.place_id} not found`);
 		return { ...review, place };
 	});
 

@@ -33,6 +33,10 @@
 
 <h2 class="text-2xl">Your Ratings</h2>
 
+{#if data.reviews.length === 0}
+	<p>No ratings yet.</p>
+{/if}
+
 <div class="flex flex-col gap-5">
 	{#each data.reviews as review}
 		<button

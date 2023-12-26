@@ -1,13 +1,22 @@
 import type { Place, Review } from '$lib/types';
 import { error } from '@sveltejs/kit';
+import type { Session } from '@supabase/supabase-js';
 
-export async function load({ params, locals: { supabase } }) {
+export async function load({ params, locals: { supabase }, parent }) {
+	const { session }: { session: Session | null } = await parent();
+
 	const { data: places }: { data: Place[] | null } = await supabase
 		.from('places')
 		.select()
 		.eq('id', params.id);
 
 	if (!places) throw error(404, 'Property not found');
+
+	if (!places[0].verified && session?.user.id !== places[0].created_by)
+		throw error(
+			401,
+			'Unauthorized: property not verified. if you created this property, please log in to view it'
+		);
 
 	const { data: reviews }: { data: Review[] | null } = await supabase
 		.from('reviews')
