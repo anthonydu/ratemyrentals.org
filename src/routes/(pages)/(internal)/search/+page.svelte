@@ -42,7 +42,7 @@
 		></ins>
 	{/if}
 {/each}
-{#if data.suggestedPlace}
+{#if data.suggestedPlace && data.places.length === 0}
 	<div class="flex w-full flex-col items-center gap-3 bg-slate-100 py-8">
 		<p class="text-center text-lg">Are you looking for:</p>
 		<p class="rounded-lg bg-white p-3">{data.suggestedPlace.formattedAddress}</p>
