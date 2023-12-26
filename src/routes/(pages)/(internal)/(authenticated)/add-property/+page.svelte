@@ -148,7 +148,7 @@
 
 		const { status, error } = await data.supabase.from('places').insert(validatedPlace);
 
-		if (status === 201) {
+		if (status < 300) {
 			alert('Property added successfully.');
 			const { data: newPlace }: { data: Place[] | null } = await data.supabase
 				.from('places')
@@ -290,7 +290,16 @@
 			placeholder="e.g. Central Park Tower"
 		/>
 	</div>
-	<button class="mt-1 rounded-lg bg-blue-600 py-2.5 text-white" type="submit">Submit</button>
+	<div class="flex flex-row gap-1">
+		<button
+			type="button"
+			class="flex-1 rounded-lg bg-slate-600 py-2.5 text-white"
+			on:click={() => window.history.back()}
+		>
+			Cancel
+		</button>
+		<button class="flex-1 rounded-lg bg-blue-600 py-2.5 text-white" type="submit">Submit</button>
+	</div>
 </form>
 
 <dialog class="w-full max-w-sm rounded-lg bg-white p-10" bind:this={dialog}>

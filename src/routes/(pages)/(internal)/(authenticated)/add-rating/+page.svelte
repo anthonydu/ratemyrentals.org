@@ -6,27 +6,58 @@
 
 	export let data;
 
-	let body = '';
-	let rating = 0;
-	let unit = '';
-	let landlord = '';
-	let rent = '';
+	let body = data.review?.body || '';
+	let rating = data.review?.rating || 0;
+	let unit = data.review?.unit || '';
+	let landlord = data.review?.landlord || '';
+	let rent = data.review?.rent?.toString() || '';
 
 	const handleSubmit = async () => {
 		const review: ReviewSubmission = {
-			place_id: data.id,
+			place_id: data.place.id,
 			body,
 			rating,
 			unit,
 			landlord,
-			rent: parseInt(rent) || undefined
+			rent: parseInt(rent) || undefined,
+			edit_history: data.review
+				? [
+						...data.review.edit_history,
+						{
+							updated_at: new Date().toISOString(),
+							previous: {
+								body: data.review.body,
+								place_id: data.review.place_id,
+								rating: data.review.rating,
+								unit: data.review.unit,
+								landlord: data.review.landlord,
+								rent: data.review.rent
+							}
+						}
+					]
+				: []
 		};
-		const { status, error } = await data.supabase.from('reviews').insert(review);
-		if (status !== 201) {
-			alert('Submission failed: ' + error?.message);
+		if (data.review) {
+			const { status, error } = await data.supabase
+				.from('reviews')
+				.update({
+					...review
+				})
+				.eq('id', data.review.id);
+			if (status < 300) {
+				alert('Review updated!');
+				window.history.back();
+			} else {
+				alert('Edit failed: ' + error?.message);
+			}
 		} else {
-			alert('Review submitted!');
-			goto(`/property/${data.id}`);
+			const { status, error } = await data.supabase.from('reviews').insert(review);
+			if (status < 300) {
+				alert('Review submitted!');
+				goto(`/property/${data.place.id}`);
+			} else {
+				alert('Submission failed: ' + error?.message);
+			}
 		}
 	};
 
@@ -35,11 +66,16 @@
 </script>
 
 <svelte:head>
-	<title>Rate {data.place.name || data.place.street_address} | Rate My Rentals</title>
+	<title
+		>{data.review ? 'Edit Rating of' : 'Rate'}
+		{data.place.name || data.place.street_address} | Rate My Rentals</title
+	>
 </svelte:head>
 
 <div>
-	<h1 class="text-3xl">Rate <b>{data.place.name || data.place.street_address}</b></h1>
+	<h1 class="text-3xl">
+		{data.review ? 'Edit Rating of' : 'Rate'} <b>{data.place.name || data.place.street_address}</b>
+	</h1>
 	<h2>{full_address(data.place)}</h2>
 </div>
 
@@ -114,5 +150,14 @@
 			required
 		/>
 	</div>
-	<button class="mt-1 rounded-lg bg-blue-600 py-2.5 text-white" type="submit">Submit</button>
+	<div class="flex flex-row gap-1">
+		<button
+			type="button"
+			class="flex-1 rounded-lg bg-slate-600 py-2.5 text-white"
+			on:click={() => window.history.back()}
+		>
+			Cancel
+		</button>
+		<button class="flex-1 rounded-lg bg-blue-600 py-2.5 text-white" type="submit">Submit</button>
+	</div>
 </form>

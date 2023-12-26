@@ -34,7 +34,7 @@
 
 <AuthButton
 	classes={{ button: 'w-max rounded-full bg-blue-600 px-6 py-3 text-white' }}
-	href={`/add-rating?id=${data.place.id}`}
+	href={`/add-rating?place_id=${data.place.id}`}
 >
 	Add a rating
 </AuthButton>
@@ -74,6 +74,6 @@
 				{/if}
 			</div>
 		</div>
-		<p>{review.body}</p>
+		<p class="whitespace-pre-wrap">{review.body}</p>
 	</div>
 {/each}

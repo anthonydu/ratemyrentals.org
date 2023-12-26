@@ -1,12 +1,14 @@
 <script>
+	import { afterNavigate } from '$app/navigation';
 	import Header from '$lib/components/Header.svelte';
-	import { onMount } from 'svelte';
 
-	onMount(() => {
-		document.querySelectorAll('ins.adsbygoogle:not(.adsbygoogle-noablate)').forEach(() => {
-			// @ts-ignore
-			(window.adsbygoogle = window.adsbygoogle || []).push({});
-		});
+	afterNavigate(() => {
+		document
+			.querySelectorAll('ins.adsbygoogle:not([data-adsbygoogle-status="done"])')
+			.forEach(() => {
+				// @ts-ignore
+				(window.adsbygoogle = window.adsbygoogle || []).push({});
+			});
 	});
 </script>
 

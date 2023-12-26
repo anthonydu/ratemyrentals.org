@@ -12,13 +12,17 @@ export type Place = PlaceSubmission & {
 	verified: boolean;
 };
 
-export type ReviewSubmission = {
+export type ReviewBody = {
 	body: string;
 	place_id: string;
 	rating: number;
-	landlord: string;
 	unit: string;
+	landlord: string;
 	rent?: number;
+};
+
+export type ReviewSubmission = ReviewBody & {
+	edit_history: { updated_at: string; previous: ReviewBody }[];
 };
 
 export type Review = ReviewSubmission & {

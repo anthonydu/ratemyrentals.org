@@ -9,6 +9,10 @@
 	const handleClick = (review: Review & { place: Place }) => {
 		goto(encodeURI(`/property/${review.place.id}#${review.id}`));
 	};
+
+	const handleEdit = (review: Review) => {
+		goto(encodeURI(`/add-rating?place_id=${review.place_id}&review_id=${review.id}`));
+	};
 </script>
 
 <svelte:head>
@@ -38,12 +42,16 @@
 		>
 			<div class="flex flex-col justify-between sm:flex-row">
 				<p class="font-bold">{review.place.name || review.place.street_address}</p>
-				<p>
-					{new Date(review.created_at).toLocaleString('default', {
-						month: 'long',
-						year: 'numeric'
-					})}
-				</p>
+				<div class="flex flex-row gap-3">
+					<p>
+						{new Date(review.created_at).toLocaleString()}
+					</p>
+					<button
+						class="hover:underline"
+						type="button"
+						on:click|stopPropagation={() => handleEdit(review)}>Edit</button
+					>
+				</div>
 			</div>
 			<div class="flex flex-col flex-wrap gap-3 sm:flex-row sm:items-center">
 				<div class="flex flex-row gap-1">
@@ -63,7 +71,7 @@
 					{/if}
 				</div>
 			</div>
-			<p>{review.body}</p>
+			<p class="whitespace-pre-wrap">{review.body}</p>
 		</button>
 	{/each}
 </div>
