@@ -60,6 +60,7 @@
 
 					case 'locality': {
 						locality = component.long_name;
+						administrativeArea = component.short_name;
 						break;
 					}
 
@@ -100,18 +101,45 @@
 			validationResult.verdict.inputGranularity !== 'PREMISE'
 		) {
 			alert(
-				'Invalid address. Please provide a valid street address without apartment, suite, or PO Box numbers and try again.'
+				'Invalid address. Please provide a valid, detailed, and numbered street address without apartment, suite, or PO Box numbers and try again.'
 			);
 			return;
 		}
 
-		validatedPlace = {
-			street_address: validationResult.address?.postalAddress?.addressLines?.[0] || '',
-			locality: validationResult.address?.postalAddress?.locality || '',
-			administrative_area: validationResult.address?.postalAddress?.administrativeArea || '',
-			country_code: validationResult.address?.postalAddress?.regionCode || '',
-			name: complexName
-		};
+		console.log(validationResult);
+
+		if (!validatedPlace)
+			validatedPlace = {
+				street_address: validationResult.address?.postalAddress?.addressLines?.[0] || '',
+				locality: '',
+				administrative_area: '',
+				country_code: validationResult.address?.postalAddress?.regionCode || '',
+				name: ''
+			};
+
+		for (const component of validationResult.address?.addressComponents || []) {
+			const componentType = component.componentType;
+
+			switch (componentType) {
+				case 'premise': {
+					validatedPlace.name = component.componentName?.text || '';
+					break;
+				}
+
+				case 'locality': {
+					validatedPlace.locality = component.componentName?.text || '';
+					validatedPlace.administrative_area = component.componentName?.text || '';
+					break;
+				}
+
+				case 'administrative_area_level_1': {
+					validatedPlace.administrative_area = component.componentName?.text || '';
+					break;
+				}
+			}
+		}
+
+		console.log(validatedPlace);
 
 		if (
 			!validatedPlace.street_address ||
