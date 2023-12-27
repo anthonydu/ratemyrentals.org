@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Search from '$lib/components/Search.svelte';
-	import backgroundImage from '$lib/img/background-image.jpg';
+	import backgroundImage from '$lib/img/background-image.webp';
 	import SignLog from '$lib/components/SignLog.svelte';
 	import { page } from '$app/stores';
 	import Hamburger from '$lib/img/Hamburger.svelte';

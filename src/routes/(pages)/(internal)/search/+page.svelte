@@ -31,7 +31,7 @@
 			<p class="ml-2">{data.places[i].numRatings} ratings</p>
 		</div>
 	</button>
-	{#if (i + 1) % 3 === 0}
+	<!-- {#if (i + 1) % 3 === 0}
 		<ins
 			class="adsbygoogle"
 			style="display:block"
@@ -40,7 +40,7 @@
 			data-ad-client="ca-pub-7450570197815362"
 			data-ad-slot="4441530623"
 		></ins>
-	{/if}
+	{/if} -->
 {/each}
 {#if data.suggestedPlace && data.places.length === 0}
 	<div class="flex w-full flex-col items-center gap-3 bg-slate-100 py-8">

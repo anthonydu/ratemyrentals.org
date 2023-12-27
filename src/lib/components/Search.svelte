@@ -30,7 +30,7 @@
 			types: ['premise', 'street_address'],
 			// "address_components" is not used here but causes a shorter "name"
 			fields: ['address_components', 'name', 'place_id'],
-			componentRestrictions: { country: $searchFilter ? $searchFilter.toLowerCase() : undefined }
+			componentRestrictions: { country: $searchFilter ? [$searchFilter.toLowerCase()] : [] }
 		});
 		autocomplete.addListener('place_changed', () => {
 			const place = autocomplete.getPlace();
@@ -46,7 +46,7 @@
 
 	const handleChange = () => {
 		autocomplete.setComponentRestrictions({
-			country: $searchFilter ? $searchFilter.toLowerCase() : undefined
+			country: $searchFilter ? [$searchFilter.toLowerCase()] : []
 		});
 		if ($page.url.pathname.startsWith('/search')) {
 			goto(encodeURI(`/search?q=${$searchQuery}&filter=${$searchFilter}`));
@@ -64,6 +64,7 @@
 				e.currentTarget.blur();
 			}}
 			name="filter"
+			aria-label="Filter"
 		>
 			<optgroup label="Select a Region">
 				<option value="">Worldwide</option>
@@ -129,7 +130,7 @@
 			{autofocus}
 		/>
 		{#if type === 'primary'}
-			<button type="submit" class={`${classes.button}`}>
+			<button type="submit" class={`${classes.button}`} aria-label="Search">
 				<div class="flex items-center justify-center">
 					<SearchIcon class="h-2/5 w-2/5" />
 				</div>

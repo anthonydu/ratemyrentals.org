@@ -1,15 +1,15 @@
 <script>
-	import { afterNavigate } from '$app/navigation';
 	import Header from '$lib/components/Header.svelte';
+	// import { afterNavigate } from '$app/navigation';
 
-	afterNavigate(() => {
-		document
-			.querySelectorAll('ins.adsbygoogle:not([data-adsbygoogle-status="done"])')
-			.forEach(() => {
-				// @ts-ignore
-				(window.adsbygoogle = window.adsbygoogle || []).push({});
-			});
-	});
+	// afterNavigate(() => {
+	// 	document
+	// 		.querySelectorAll('ins.adsbygoogle:not([data-adsbygoogle-status="done"])')
+	// 		.forEach(() => {
+	// 			// @ts-ignore
+	// 			(window.adsbygoogle = window.adsbygoogle || []).push({});
+	// 		});
+	// });
 </script>
 
 <svelte:head>
@@ -24,12 +24,12 @@
 	</div>
 	<div class="md:flex-1">
 		<!-- Side Bar -->
-		<ins
+		<!-- <ins
 			class="adsbygoogle"
 			style="display:block"
 			data-ad-format="autorelaxed"
 			data-ad-client="ca-pub-7450570197815362"
 			data-ad-slot="5127355511"
-		></ins>
+		></ins> -->
 	</div>
 </main>

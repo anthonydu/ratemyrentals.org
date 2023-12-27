@@ -36,7 +36,7 @@
 		autocomplete = new places.Autocomplete(addressInput, {
 			types: ['premise', 'street_address'],
 			fields: ['address_components'],
-			componentRestrictions: { country: regionCode ? regionCode.toLowerCase() : undefined }
+			componentRestrictions: { country: regionCode ? [regionCode.toLowerCase()] : [] }
 		});
 		if (data.suggestedPlace) {
 			for (const component of data.suggestedPlace.addressComponents) {
@@ -242,7 +242,7 @@
 				bind:value={regionCode}
 				on:change={() =>
 					autocomplete.setComponentRestrictions({
-						country: regionCode ? regionCode.toLowerCase() : undefined
+						country: regionCode ? [regionCode.toLowerCase()] : []
 					})}
 				autocomplete="country-name"
 				required
