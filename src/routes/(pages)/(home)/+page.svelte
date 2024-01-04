@@ -10,7 +10,7 @@
 
 <svelte:head>
 	<title>Rate My Rentals</title>
-	<meta name="description" content="Rate your rentals, landlords or tenants." />
+	<meta name="description" content="Rate your rentals, landlords, or tenants." />
 	<meta name="theme-color" content="#6b6b6b" />
 </svelte:head>
 
