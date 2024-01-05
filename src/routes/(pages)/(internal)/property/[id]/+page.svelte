@@ -72,6 +72,12 @@
 				{#if review.landlord}
 					<p class="w-max">Owner: <b>{review.landlord}</b></p>
 				{/if}
+				{#if review.beds}
+					<p class="w-max">Beds: <b>{review.beds}</b></p>
+				{/if}
+				{#if review.baths}
+					<p class="w-max">Baths: <b>{review.baths}</b></p>
+				{/if}
 				{#if review.rent}
 					<p class="w-max">Rent: <b>{review.rent}</b></p>
 				{/if}

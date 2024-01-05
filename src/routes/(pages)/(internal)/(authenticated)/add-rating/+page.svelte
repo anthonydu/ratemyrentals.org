@@ -13,6 +13,8 @@
 	let rent = data.review?.rent?.toString() || '';
 	let termStart = data.review?.term?.[0] || '';
 	let termEnd = data.review?.term?.[1] || '';
+	let beds = data.review?.beds?.toString() || '';
+	let baths = data.review?.baths?.toString() || '';
 
 	const handleSubmit = async () => {
 		const review: ReviewSubmission = {
@@ -23,6 +25,8 @@
 			landlord,
 			rent: parseInt(rent) || undefined,
 			term: termStart && termEnd ? [termStart, termEnd] : undefined,
+			beds: parseFloat(beds) || undefined,
+			baths: parseFloat(baths) || undefined,
 			edit_history: data.review
 				? [
 						...data.review.edit_history,
@@ -35,7 +39,9 @@
 								unit: data.review.unit,
 								landlord: data.review.landlord,
 								rent: data.review.rent,
-								term: data.review.term
+								term: data.review.term,
+								beds: data.review.beds,
+								baths: data.review.baths
 							}
 						}
 					]
@@ -159,6 +165,30 @@
 			id="landlord"
 			bind:value={landlord}
 			placeholder="e.g. John Doe"
+		/>
+	</div>
+	<div class="flex flex-col gap-1">
+		<label for="beds">Number of Bedrooms <span class="text-slate-400">(optional)</span></label>
+		<input
+			class="rounded-lg border-2 border-slate-300 px-2.5 py-1.5 focus:placeholder:text-transparent [&::-webkit-inner-spin-button]:appearance-none"
+			name="beds"
+			type="number"
+			step=".5"
+			id="beds"
+			bind:value={beds}
+			placeholder="e.g. 3"
+		/>
+	</div>
+	<div class="flex flex-col gap-1">
+		<label for="baths">Number of Bathrooms <span class="text-slate-400">(optional)</span></label>
+		<input
+			class="rounded-lg border-2 border-slate-300 px-2.5 py-1.5 focus:placeholder:text-transparent [&::-webkit-inner-spin-button]:appearance-none"
+			name="baths"
+			step=".5"
+			type="number"
+			id="baths"
+			bind:value={baths}
+			placeholder="e.g. 2"
 		/>
 	</div>
 	<div class="flex flex-col gap-1">

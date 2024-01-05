@@ -20,6 +20,8 @@ export type ReviewBody = {
 	landlord: string;
 	rent?: number;
 	term?: [string, string];
+	beds?: number;
+	baths?: number;
 };
 
 export type ReviewSubmission = ReviewBody & {
